@@ -114,50 +114,7 @@
           body: JSON.stringify({ name, age, email, symptoms })
         });
         if (res.ok) {
-          const data = await res.json();
-          console.log("Relay.app response:", data); // <-- Add this line
-
-          let details = `<strong>Thank you, ${name}!</strong><br>Your request has been submitted.<br><br>`;
-
-          // Try to extract ward info from all possible places
-          let ward = data.ward || data.assigned_ward || data.category;
-          if (!ward && data.result) {
-            ward = data.result.ward || data.result.assigned_ward || data.result.category;
-          }
-          // Try even deeper nesting if needed
-          if (!ward && data.result && data.result.data) {
-            ward = data.result.data.ward || data.result.data.assigned_ward || data.result.data.category;
-          }
-          details += `<strong>Assigned Ward:</strong> ${ward ? ward : "Not specified"}<br>`;
-
-          // Instructions
-          let instructions = data.instructions || (data.result && data.result.instructions);
-          if (!instructions && data.result && data.result.data) {
-            instructions = data.result.data.instructions;
-          }
-          if (instructions) {
-            details += `<strong>Instructions:</strong> ${instructions}<br>`;
-          }
-
-          // Next Steps
-          let nextSteps = data.next_steps || (data.result && data.result.next_steps);
-          if (!nextSteps && data.result && data.result.data) {
-            nextSteps = data.result.data.next_steps;
-          }
-          if (nextSteps) {
-            details += `<strong>Next Steps:</strong> ${nextSteps}<br>`;
-          }
-
-          // Message or summary
-          let message = data.message || (data.result && data.result.message);
-          if (!message && data.result && data.result.data) {
-            message = data.result.data.message;
-          }
-          if (message) {
-            details += `<strong>Message:</strong> ${message}<br>`;
-          }
-
-          output.innerHTML = details;
+          output.innerText = `Thank you, ${name}. Your request has been submitted.`;
         } else {
           output.innerText = "Error connecting to server. Please try again later.";
         }
