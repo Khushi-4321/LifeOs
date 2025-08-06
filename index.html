@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City Hospital AI Reception</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; background: #f0f4f8; }
+    h1 { color: #2c3e50; }
+    form { background: #fff; padding: 1rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    label { display: block; margin: 1rem 0 0.3rem; }
+    input, textarea, button {
+      width: 100%; padding: 0.5rem; margin-bottom: 1rem;
+      border: 1px solid #ccc; border-radius: 4px;
+    }
+    button { background-color: #3498db; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #2980b9; }
+    .result { margin-top: 1rem; padding: 1rem; background: #eafaf1; border-left: 5px solid #2ecc71; }
+  </style>
+</head>
+<body>
+  <h1>City Hospital Smart Receptionist</h1>
+  <form id="patient-form">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" required />
+
+    <label for="age">Age</label>
+    <input type="number" id="age" required />
+
+    <label for="symptoms">Describe your symptoms</label>
+    <textarea id="symptoms" rows="4" required></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="output" class="result" style="display: none;"></div>
+
+  <script>
+    const form = document.getElementById('patient-form');
+    const output = document.getElementById('output');
+
+    async function classifyPatient(symptoms) {
+      // Mock classifier using keyword rules
+      const lower = symptoms.toLowerCase();
+      if (lower.includes("bleeding") || lower.includes("unconscious") || lower.includes("accident")) {
+        return "Emergency";
+      } else if (lower.includes("anxiety") || lower.includes("depression") || lower.includes("mental")) {
+        return "Mental Health";
+      } else {
+        return "General";
+      }
+    }
+
+    function simulateAction(ward, name) {
+      switch (ward) {
+        case 'Emergency':
+          return `🚨 ${name}, please proceed directly to the Emergency Room. We've notified staff.`;
+        case 'Mental Health':
+          return `🧠 ${name}, a mental health specialist will contact you soon at mentalhealth@cityhospital.org.`;
+        case 'General':
+          return `📅 ${name}, your details have been sent to generaldoctor@cityhospital.org for appointment scheduling.`;
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const age = document.getElementById('age').value;
+      const symptoms = document.getElementById('symptoms').value;
+
+      const ward = await classifyPatient(symptoms);
+      const message = simulateAction(ward, name);
+
+      output.innerText = `Assigned to: ${ward} Ward\n\n${message}`;
+      output.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
