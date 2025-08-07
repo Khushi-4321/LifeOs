@@ -1,2 +1,2 @@
 # LifeOs
-Agentic ai that provides mentorship and support as human would.
+An AI-driven patient triage and appointment system to reduce hospital wait times and improve patient routing efficiency.
